@@ -11,6 +11,7 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	screen.DrawImage(PlayerCar, nil)
 }
 
 // Layout is called when the game's layout changes
