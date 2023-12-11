@@ -1,4 +1,4 @@
-module github.com/jeagul/forgotten-fields
+module github.com/jeaguil/forgotten-fields
 
 go 1.18
 
