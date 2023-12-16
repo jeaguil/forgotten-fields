@@ -9,12 +9,12 @@ type Game struct {
 }
 
 func (g *Game) Update() error {
-	g.player.Update(g)
+	g.player.Update()
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	g.player.Draw(screen, g)
+	g.player.Draw(screen)
 }
 
 // Layout is called when the Game's layout changes.

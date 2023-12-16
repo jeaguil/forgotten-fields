@@ -1,6 +1,10 @@
 package main
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"math"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 type Vector struct {
 	x float64
@@ -9,54 +13,70 @@ type Vector struct {
 
 type Player struct {
 	position Vector
+	cardinal CardinalDirection
 	sprite   *ebiten.Image
 }
 
 func NewPlayer() *Player {
 	sprite := PlayerCar
 
+	// get img size to determine player starting position (will always be center of game screen).
 	bounds := sprite.Bounds()
 	halfW := float64(bounds.Dx()) / 2
 	halfH := float64(bounds.Dy()) / 2
-
 	startingPosition := Vector{
 		x: gameScreenWidth/2 - halfW,
 		y: gameScreenHeight/2 - halfH,
 	}
+	startingDirection := CardinalDirection{
+		direction: 0,
+		angle:     -90.0 * math.Pi / 180.0,
+	}
 
 	return &Player{
 		position: startingPosition,
+		cardinal: startingDirection,
 		sprite:   PlayerCar,
 	}
 }
 
-func (p *Player) Update(g *Game) {
-	speed := 5.0
+type CardinalDirection struct {
+	direction int
+	angle     float64
+}
 
+func (p *Player) Update() {
+	velocity := 2.5
 	if ebiten.IsKeyPressed(ebiten.KeyDown) {
-		g.player.position.y += speed
+		p.position.y += velocity
+		p.cardinal.angle = 90.0 * math.Pi / 180.0
+		p.cardinal.direction = 2
 	}
-
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
-		g.player.position.y -= speed
+		p.position.y -= velocity
+		p.cardinal.angle = -90.0 * math.Pi / 180.0
+		p.cardinal.direction = 0
 	}
-
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
-		g.player.position.x += speed
+		p.position.x += velocity
+		p.cardinal.angle = 0.0 * math.Pi / 180.0
+		p.cardinal.direction = 1
 	}
-
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
-		g.player.position.x -= speed
+		p.position.x -= velocity
+		p.cardinal.angle = 180.0 * math.Pi / 180.0
+		p.cardinal.direction = 3
 	}
 }
 
-func (p *Player) Draw(screen *ebiten.Image, g *Game) {
+func (p *Player) Draw(screen *ebiten.Image) {
 	drawOptions := &ebiten.DrawImageOptions{}
-
-	// get img size to determine player starting position (will always be center of game screen).
-	x := PlayerCar.Bounds().Dx()
-	y := PlayerCar.Bounds().Dy()
-	drawOptions.GeoM.Translate(g.player.position.x-float64(x)/2, g.player.position.y-float64(y)/2)
-
-	screen.DrawImage(PlayerCar, drawOptions)
+	bounds := p.sprite.Bounds()
+	halfW := float64(bounds.Dx()) / 2
+	halfH := float64(bounds.Dy()) / 2
+	drawOptions.GeoM.Translate(-halfW, -halfH)
+	drawOptions.GeoM.Rotate(p.cardinal.angle)
+	drawOptions.GeoM.Translate(halfW, halfH)
+	drawOptions.GeoM.Translate(p.position.x, p.position.y)
+	screen.DrawImage(p.sprite, drawOptions)
 }

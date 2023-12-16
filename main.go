@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	gameScreenWidth  = 500
-	gameScreenHeight = 500
+	gameScreenWidth  = 800
+	gameScreenHeight = 600
 )
 
 func init() {}
