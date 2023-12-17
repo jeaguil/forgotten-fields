@@ -11,12 +11,10 @@ const (
 	gameScreenHeight = 600
 )
 
-func init() {}
-
 func main() {
 	ebiten.SetWindowTitle("Forgotten-Fields")
 	ebiten.SetWindowSize(gameScreenWidth, gameScreenHeight)
-	ebiten.SetWindowResizable(false)
+	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeDisabled)
 
 	g, err := NewGame()
 	if err != nil {
