@@ -18,7 +18,7 @@ type Player struct {
 }
 
 func NewPlayer() *Player {
-	sprite := PlayerCar
+	sprite := PLAYER_CAR
 
 	// get img size to determine player starting position (will always be center of game screen).
 	bounds := sprite.Bounds()
@@ -29,19 +29,19 @@ func NewPlayer() *Player {
 		y: gameScreenHeight/2 - halfH,
 	}
 	startingDirection := CardinalDirection{
-		direction: 0,
+		direction: "N",
 		angle:     -90.0 * math.Pi / 180.0,
 	}
 
 	return &Player{
 		position: startingPosition,
 		cardinal: startingDirection,
-		sprite:   PlayerCar,
+		sprite:   PLAYER_CAR,
 	}
 }
 
 type CardinalDirection struct {
-	direction int
+	direction string
 	angle     float64
 }
 
@@ -50,22 +50,22 @@ func (p *Player) Update() {
 	if ebiten.IsKeyPressed(ebiten.KeyDown) {
 		p.position.y += velocity
 		p.cardinal.angle = 90.0 * math.Pi / 180.0
-		p.cardinal.direction = 2
+		p.cardinal.direction = "S"
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
 		p.position.y -= velocity
 		p.cardinal.angle = -90.0 * math.Pi / 180.0
-		p.cardinal.direction = 0
+		p.cardinal.direction = "N"
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
 		p.position.x += velocity
 		p.cardinal.angle = 0.0 * math.Pi / 180.0
-		p.cardinal.direction = 1
+		p.cardinal.direction = "E"
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
 		p.position.x -= velocity
 		p.cardinal.angle = 180.0 * math.Pi / 180.0
-		p.cardinal.direction = 3
+		p.cardinal.direction = "W"
 	}
 }
 
