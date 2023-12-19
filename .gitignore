@@ -20,5 +20,5 @@
 # Go workspace file
 go.work
 
-# Game script
-forgotten-fields
+build/
+tmp/
