@@ -16,19 +16,20 @@ var assets embed.FS
 
 var (
 	// main player sprite
-	playerCar  *ebiten.Image
 	playerIdle *ebiten.Image
+	playerWalk *ebiten.Image
 
 	uiFont font.Face
 )
 
 const (
-	playerWidth          = 16
-	playerHeight         = 64
-	playerOX             = 0
-	playerOY             = 0
-	playerFrameCount     = 4
-	playerAnimationSpeed = 10
+	playerWidth                  = 16
+	playerHeight                 = 64
+	playerOX                     = 0
+	playerOY                     = 0
+	playerFrameCount             = 4
+	playerFrameAnimationSequence = 15
+	playerFrameWalkSpeed         = 10
 )
 
 func requiredAssetImage(filepath string) *ebiten.Image {
@@ -72,7 +73,7 @@ func requiredAssetFont(filepath string) font.Face {
 }
 
 func LoadGameAssets() {
-	playerCar = requiredAssetImage("assets/kenney_robotpack/robot_3Dred.png")
 	playerIdle = requiredAssetImage("assets/playeridle.png")
+	playerWalk = requiredAssetImage("assets/playerwalk.png")
 	uiFont = requiredAssetFont("assets/font.ttf")
 }
