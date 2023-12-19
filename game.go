@@ -9,23 +9,34 @@ import (
 )
 
 type Game struct {
-	player *Player
+	player     *Player
+	frameCount int
 }
 
 func (g *Game) Update() error {
 	g.player.Update()
+	g.frameCount++
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	text.Draw(
 		screen,
-		fmt.Sprintf("%v", g.player.cardinal.direction),
-		UI_FONT,
-		gameScreenWidth/2,
+		gameTitle,
+		uiFont,
+		gameScreenWidth/2-200,
 		50,
 		color.White)
-	g.player.Draw(screen)
+
+	text.Draw(
+		screen,
+		fmt.Sprintf("%v", g.player.cardinal.direction),
+		uiFont,
+		50,
+		gameScreenHeight-50,
+		color.White,
+	)
+	g.player.Draw(screen, g)
 }
 
 // Layout is called when the Game's layout changes.

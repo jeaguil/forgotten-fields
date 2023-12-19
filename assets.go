@@ -4,6 +4,7 @@ import (
 	"embed"
 	"image"
 	_ "image/png"
+	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"golang.org/x/image/font"
@@ -15,20 +16,32 @@ var assets embed.FS
 
 var (
 	// main player sprite
-	PLAYER_CAR = requiredAssetImage("assets/kenney_robotpack/robot_3Dred.png")
+	playerCar  *ebiten.Image
+	playerIdle *ebiten.Image
 
-	UI_FONT = requiredAssetFont("assets/font.ttf")
+	uiFont font.Face
+)
+
+const (
+	playerWidth          = 16
+	playerHeight         = 64
+	playerOX             = 0
+	playerOY             = 0
+	playerFrameCount     = 4
+	playerAnimationSpeed = 10
 )
 
 func requiredAssetImage(filepath string) *ebiten.Image {
 	f, err := assets.Open(filepath)
 	if err != nil {
+		log.Fatal(err)
 		panic(err)
 	}
 	defer f.Close()
 
 	img, _, err := image.Decode(f)
 	if err != nil {
+		log.Fatal(err)
 		panic(err)
 	}
 
@@ -47,7 +60,7 @@ func requiredAssetFont(filepath string) font.Face {
 	}
 
 	face, err := opentype.NewFace(tt, &opentype.FaceOptions{
-		Size:    48,
+		Size:    32,
 		DPI:     72,
 		Hinting: font.HintingVertical,
 	})
@@ -56,4 +69,10 @@ func requiredAssetFont(filepath string) font.Face {
 	}
 
 	return face
+}
+
+func LoadGameAssets() {
+	playerCar = requiredAssetImage("assets/kenney_robotpack/robot_3Dred.png")
+	playerIdle = requiredAssetImage("assets/playeridle.png")
+	uiFont = requiredAssetFont("assets/font.ttf")
 }

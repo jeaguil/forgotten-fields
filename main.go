@@ -9,10 +9,16 @@ import (
 const (
 	gameScreenWidth  = 800
 	gameScreenHeight = 600
+
+	gameTitle = "Forgotten Fields"
 )
 
+func init() {
+	LoadGameAssets()
+}
+
 func main() {
-	ebiten.SetWindowTitle("Forgotten-Fields")
+	ebiten.SetWindowTitle(gameTitle)
 	ebiten.SetWindowSize(gameScreenWidth, gameScreenHeight)
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeDisabled)
 
