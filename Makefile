@@ -1,5 +1,12 @@
 BINARY_NAME := forgotten-fields
 
+# Using Windows Subsystem for Linux (WSL) requires environment variable GOOS=windows when running application
+WSL_FLAGS :=
+UNAME_S := ${shell uname -s}
+ifeq ($(UNAME_S), Linux)
+	WSL_FLAGS += GOOS=windows
+endif
+
 .PHONY: help
 help:
 	@echo 'Usage:'
@@ -29,7 +36,9 @@ audit:
 ## build: build the application
 .PHONY: build
 build:
-	go build -o ./build/tmp/bin/${BINARY_NAME}
+	@echo '$@: Building ${BINARY_NAME}...'
+	$(WSL_FLAGS) go build -o ./build/tmp/bin/${BINARY_NAME}
+	@echo '$@: successful'
 
 ## run: run the application
 .PHONY: run
