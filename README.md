@@ -4,3 +4,5 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/jeaguil/forgotten-fields)](https://goreportcard.com/report/github.com/jeaguil/forgotten-fields)
 
 Assets by [Kenney](https://kenney.nl).
+
+![forgotten-fields](assets/forgotten-fields.png)
