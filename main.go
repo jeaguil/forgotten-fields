@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	gameScreenWidth  = 800
-	gameScreenHeight = 600
+	gameScreenWidth  = 960
+	gameScreenHeight = 640
 
 	gameTitle = "Forgotten Fields"
 )

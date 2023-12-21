@@ -84,7 +84,7 @@ func (p *Player) Draw(screen *ebiten.Image, g *Game) {
 		op.GeoM.Scale(-1, 1)
 		op.GeoM.Translate(flipSpeed, 0)
 	}
-	op.GeoM.Scale(2.5, 2.5)
+	op.GeoM.Scale(1.5, 1.5)
 	op.GeoM.Translate(p.position.x, p.position.y)
 	i := (g.frameCount / animationSpeed) % playerFrameCount
 	sx, sy := playerOX+i*playerWidth, 0

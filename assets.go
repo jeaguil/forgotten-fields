@@ -20,6 +20,8 @@ var (
 	playerWalk *ebiten.Image
 
 	uiFont font.Face
+
+	BackgroundImage *ebiten.Image
 )
 
 const (
@@ -73,7 +75,10 @@ func requiredAssetFont(filepath string) font.Face {
 }
 
 func LoadGameAssets() {
+	uiFont = requiredAssetFont("assets/font.ttf")
+
 	playerIdle = requiredAssetImage("assets/playeridle.png")
 	playerWalk = requiredAssetImage("assets/playerwalk.png")
-	uiFont = requiredAssetFont("assets/font.ttf")
+
+	BackgroundImage = LoadMap()
 }

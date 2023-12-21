@@ -13,8 +13,9 @@ import (
 
 const (
 	TransformType ComponentType = "TRANSFORM"
-	SpriteType    ComponentType = "SPRITE"
+	ImgType       ComponentType = "IMG"
 	AnimationType ComponentType = "ANIMATION"
+	ScaleType     ComponentType = "SCALE"
 )
 
 type TransformComponent struct {
@@ -23,11 +24,17 @@ type TransformComponent struct {
 
 func (t *TransformComponent) Type() ComponentType { return TransformType }
 
-type SpriteComponent struct {
+type ImgComponent struct {
 	Image *ebiten.Image
 }
 
-func (s *SpriteComponent) Type() ComponentType { return SpriteType }
+func (i *ImgComponent) Type() ComponentType { return ImgType }
+
+type ScaleComponent struct {
+	factor int
+}
+
+func (s *ScaleComponent) Type() ComponentType { return ScaleType }
 
 type ComponentType string
 
@@ -89,13 +96,15 @@ type RenderSystem struct {
 }
 
 func (r *RenderSystem) Draw(screen *ebiten.Image) {
-	for _, e := range r.Registry.Query(TransformType, SpriteType) {
+	for _, e := range r.Registry.Query(TransformType, ImgType) {
 		position := e.GetComponent(TransformType).(*TransformComponent)
-		sprite := e.GetComponent(SpriteType).(*SpriteComponent)
+		img := e.GetComponent(ImgType).(*ImgComponent)
+		scale := e.GetComponent(ScaleType).(*ScaleComponent)
 
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(position.PosX, position.PosY)
-		screen.DrawImage(sprite.Image, op)
+		op.GeoM.Scale(float64(scale.factor), float64(scale.factor))
+		screen.DrawImage(img.Image, op)
 	}
 }
 
@@ -113,9 +122,9 @@ type AnimationSystem struct {
 }
 
 func (a *AnimationSystem) Update() error {
-	for _, e := range a.Registry.Query(SpriteType, AnimationType) {
+	for _, e := range a.Registry.Query(ImgType, AnimationType) {
 		a := e.GetComponent(AnimationType).(*AnimationComponent)
-		s := e.GetComponent(SpriteType).(*SpriteComponent)
+		s := e.GetComponent(ImgType).(*ImgComponent)
 
 		a.Count += a.AnimationSpeed
 		a.CurrentFrameIndex = int(math.Floor(a.Count))

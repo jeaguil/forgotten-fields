@@ -5,12 +5,14 @@ import (
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
 type Game struct {
-	player     *Player
-	frameCount int
+	player       *Player
+	frameCount   int
+	RenderSystem *RenderSystem
 }
 
 func (g *Game) Update() error {
@@ -20,6 +22,8 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	screen.DrawImage(BackgroundImage, nil)
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("TPS: %0.2f", ebiten.ActualTPS()))
 	text.Draw(
 		screen,
 		gameTitle,
@@ -37,6 +41,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		color.White,
 	)
 	g.player.Draw(screen, g)
+	g.RenderSystem.Draw(screen)
 }
 
 // Layout is called when the Game's layout changes.
@@ -46,7 +51,11 @@ func (g *Game) Layout(width, height int) (int, int) {
 
 // NewGame returns a new Forgotten-Fields Game.
 func NewGame() (*Game, error) {
-	g := &Game{}
-	g.player = NewPlayer()
+	registry := Registry{}
+	renderSystem := RenderSystem{Registry: &registry}
+	g := &Game{
+		RenderSystem: &renderSystem,
+		player:       NewPlayer(),
+	}
 	return g, nil
 }
