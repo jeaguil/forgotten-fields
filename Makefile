@@ -11,7 +11,7 @@ all: run
 .PHONY: tidy
 tidy:
 	go fmt ./...
-	go mod tidy -vm
+	go mod tidy -v
 
 ## no-dirty: checks that there are no uncommited changes in the tracked files
 .PHONY: no-dirty
