@@ -22,12 +22,14 @@ var (
 type Game struct {
 	player       *Player
 	frameCount   int
-	RenderSystem *RenderSystem
+	renderSystem *RenderSystem
+	camera       *Camera
 }
 
 func (g *Game) Update() error {
 	g.player.Update()
 	g.frameCount++
+	g.camera.Update(g.player) // Camera follows player
 	return nil
 }
 
@@ -51,7 +53,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		color.White,
 	)
 	g.player.Draw(screen, g)
-	g.RenderSystem.Draw(screen)
+	g.camera.Draw(screen)
+	g.renderSystem.Draw(screen)
 }
 
 // Layout is called when the Game's layout changes.
@@ -63,9 +66,15 @@ func (g *Game) Layout(width, height int) (int, int) {
 func NewGame() (*Game, error) {
 	registry := Registry{}
 	renderSystem := RenderSystem{Registry: &registry}
+	cam := Camera{
+		color:  color.RGBA64{255, 0, 0, 255},
+		radius: 30.0,
+		scale:  2.0,
+	}
 	g := &Game{
-		RenderSystem: &renderSystem,
+		renderSystem: &renderSystem,
 		player:       NewPlayer(),
+		camera:       &cam,
 	}
 	return g, nil
 }
