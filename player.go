@@ -67,6 +67,20 @@ func (p *Player) Update() {
 		p.cardinal.direction = West
 		isMoving = true
 	}
+
+	// Check for player movement restrictions
+	if p.position.x < minX {
+		p.position.x = minX
+	}
+	if p.position.x > maxX {
+		p.position.x = maxX
+	}
+	if p.position.y < minY {
+		p.position.y = minY
+	}
+	if p.position.y > maxY {
+		p.position.y = maxY
+	}
 }
 
 func (p *Player) Draw(screen *ebiten.Image, g *Game) {

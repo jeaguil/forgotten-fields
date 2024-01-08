@@ -9,6 +9,16 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
+var (
+
+	// Define game movement boundaries
+	minX = 0.0
+	maxX = float64(gameScreenWidth - 16.0) // Player image width is 16
+
+	minY = 0.0
+	maxY = float64(gameScreenHeight - 16.0) // Player image height is 16
+)
+
 type Game struct {
 	player       *Player
 	frameCount   int
