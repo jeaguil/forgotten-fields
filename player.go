@@ -7,6 +7,11 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
+type Vector struct {
+	x float64
+	y float64
+}
+
 type Player struct {
 	position Vector
 	cardinal CardinalDirection
@@ -16,6 +21,18 @@ type Player struct {
 var (
 	isMoving bool = false
 )
+
+const (
+	North string = "North"
+	South string = "South"
+	East  string = "East"
+	West  string = "West"
+)
+
+type CardinalDirection struct {
+	direction string
+	angle     float64
+}
 
 func NewPlayer() *Player {
 	sprite := playerIdle
@@ -40,7 +57,7 @@ func NewPlayer() *Player {
 	}
 }
 
-func (p *Player) Update() {
+func (p *Player) Update(l *Level) {
 	velocity := 1.5
 	isMoving = false
 	if ebiten.IsKeyPressed(ebiten.KeyDown) {

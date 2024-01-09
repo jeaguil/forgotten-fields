@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -9,11 +10,16 @@ import (
 )
 
 const (
-	mapPath string = "./assets/tiles/forgotten-fields.tmx"
+	level0FilePath string = "./assets/tiles/forgotten-fields.tmx"
 )
 
-func LoadMap() *ebiten.Image {
-	levelMap, err := tiled.LoadFile(mapPath)
+type Level struct {
+	pathLayerImg *image.NRGBA
+	mapImg       *ebiten.Image
+}
+
+func (l *Level) loadMap() {
+	levelMap, err := tiled.LoadFile(level0FilePath)
 	if err != nil {
 		log.Fatalf("error parsing map: %s", err.Error())
 		panic(err)
@@ -23,10 +29,18 @@ func LoadMap() *ebiten.Image {
 		log.Fatalf("map unsupported for rendering: %s", err.Error())
 		panic(err)
 	}
-	err = renderer.RenderVisibleLayers()
+	err = renderer.RenderGroup(0)
 	if err != nil {
-		log.Fatalf("layer unsupported for rendering: %s", err.Error())
+		log.Fatalf("error rendering path template layers: %s", err.Error())
 		panic(err)
 	}
-	return ebiten.NewImageFromImage(renderer.Result)
+	l.pathLayerImg = renderer.Result
+	renderer.Clear()
+
+	err = renderer.RenderVisibleGroups()
+	if err != nil {
+		log.Fatalf("group unsupported for rendering: %s", err.Error())
+		panic(err)
+	}
+	l.mapImg = ebiten.NewImageFromImage(renderer.Result)
 }

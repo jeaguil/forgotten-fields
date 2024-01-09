@@ -24,17 +24,18 @@ type Game struct {
 	frameCount   int
 	renderSystem *RenderSystem
 	camera       *Camera
+	level        *Level
 }
 
 func (g *Game) Update() error {
-	g.player.Update()
+	g.player.Update(g.level)
 	g.frameCount++
 	g.camera.Update(g.player) // Camera follows player
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	screen.DrawImage(BackgroundImage, nil)
+	screen.DrawImage(g.level.mapImg, nil)
 	ebitenutil.DebugPrint(screen, fmt.Sprintf("TPS: %0.2f", ebiten.ActualTPS()))
 	text.Draw(
 		screen,
@@ -71,10 +72,14 @@ func NewGame() (*Game, error) {
 		radius: 30.0,
 		scale:  2.0,
 	}
+	level := Level{}
+	level.loadMap()
+
 	g := &Game{
 		renderSystem: &renderSystem,
 		player:       NewPlayer(),
 		camera:       &cam,
+		level:        &level,
 	}
 	return g, nil
 }

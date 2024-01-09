@@ -20,8 +20,6 @@ var (
 	playerWalk *ebiten.Image
 
 	uiFont font.Face
-
-	BackgroundImage *ebiten.Image
 )
 
 const (
@@ -79,6 +77,4 @@ func LoadGameAssets() {
 
 	playerIdle = requiredAssetImage("assets/playeridle.png")
 	playerWalk = requiredAssetImage("assets/playerwalk.png")
-
-	BackgroundImage = LoadMap()
 }
