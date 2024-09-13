@@ -2,6 +2,8 @@ module github.com/jeaguil/forgotten-fields
 
 go 1.21.5
 
+retract v0.0.0
+
 require (
 	github.com/hajimehoshi/ebiten/v2 v2.6.3
 	golang.org/x/image v0.15.0
