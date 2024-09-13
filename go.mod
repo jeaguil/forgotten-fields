@@ -2,7 +2,7 @@ module github.com/jeaguil/forgotten-fields
 
 go 1.21.5
 
-retract v0.0.0
+retract v0.0.0-20240109183808-b7badffeef93
 
 require (
 	github.com/hajimehoshi/ebiten/v2 v2.6.3
